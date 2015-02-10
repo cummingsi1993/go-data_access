@@ -2,14 +2,7 @@ package couchbase
 
 import (
 	"github.com/couchbaselabs/go-couchbase"
-	"errors"
 )
-
-
-
-type CouchbaseDal struct {
-	location string
-}
 
 func Get(dbLocation string, key string, value interface{}) (err error) {
 	c, err := couchbase.Connect("http://localhost:8091/")
@@ -60,8 +53,9 @@ func Set(dbLocation string, key string, value interface{}) (err error) {
 	added, err := bucket.Add(key, 0, value)
 	if (err != nil) { return }
 
-	if !added { 
-		err = errors.New("not added")
+	if !added {
+		//I should modify the value for this key
+		err = bucket.Set(key, 0, value)
 	}
 	return
 }
